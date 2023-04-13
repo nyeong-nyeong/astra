@@ -6,6 +6,8 @@ import com.astra.astrabackend.repository.UsersRepository;
 import com.astra.astrabackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +29,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UsersResponseDTO login(String id, String pw) {
-
+    public ResponseEntity<?> login(String id, String pw) {
+        if(repository.findById(id).isEmpty()){
+            return new ResponseEntity<>("No Such Id", HttpStatus.OK);
+        } else {
         if(passwordEncoder.matches(pw , repository.findById(id).get().getPw())) {
             log.info(":: 로그인 성공 ::");
-            return new UsersResponseDTO(repository.findById(id).orElseThrow());
+            return new ResponseEntity<>(new UsersResponseDTO(repository.findById(id).orElseThrow()), HttpStatus.OK);
         } else {
             log.warn(":: 로그인 실패 ::");
-            return null;
+            return new ResponseEntity<>("wrong password", HttpStatus.OK);
         }
-
+        }
     }
 
     @Override

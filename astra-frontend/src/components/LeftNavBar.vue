@@ -8,10 +8,10 @@
         @click="rail = false"
       >
         <v-list-item
+          v-show="isLogin"
           prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
           title="John Leider"
           nav
-          @click="count()"
         >
           <template v-slot:append>
             <v-btn
@@ -25,8 +25,10 @@
         <v-divider></v-divider>
 
         <v-list density="compact" nav>
+          <v-list-item v-show="isLogin" prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
+          <v-list-item v-show="isLogin" prepend-icon="mdi-login" title="login" value="account"></v-list-item>
+          <v-list-item v-show="!isLogin" prepend-icon="mdi-logout" title="logout" value="account"></v-list-item>
           <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
-          <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
           <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>
         </v-list>
       </v-navigation-drawer>
@@ -44,12 +46,13 @@ import { defineComponent } from 'vue';
         drawer: true,
         items: [
           { title: 'Home', icon: 'mdi-home-city' },
-          { title: 'My Account', icon: 'mdi-account' },
+          { title: 'login', icon: 'mdi-login' },
+          { title: 'logout', icon: 'mdi-logout' },
+          { title: 'My Account', icon: 'mdi-account' },          
           { title: 'Users', icon: 'mdi-account-group-outline' },
         ],
         rail: true,
-        count: () => {
-    },
+        isLogin: true,
       }
     }, 
   })
