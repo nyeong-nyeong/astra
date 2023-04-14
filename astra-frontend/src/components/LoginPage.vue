@@ -87,7 +87,6 @@
     password?: string
    } 
    const userData = ref<User>({});
-   const rules = ref<any>();
    const login = () => {    
     if(userData.value.id == ''|| !userData.value.id){
       window.alert('Please enter a user Id.')
