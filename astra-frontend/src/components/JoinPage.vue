@@ -11,21 +11,21 @@
                         <h3 style="text-align: center" class="mb-8">Please Sign Up from here</h3>
                         <div>
                             <v-text-field v-model="userData.name" label="Name"
-                                    prepend-inner-icon="mdi-pencil"></v-text-field>
-                            
+                                prepend-inner-icon="mdi-pencil"></v-text-field>
+                            <VueDatePicker v-model="date"></VueDatePicker>aswd
                             <v-text-field v-model="userData.id" label="Id" prepend-inner-icon="mdi-account">
-                         </v-text-field>                         
-                         <v-btn color="gray">
-                            <p>Confirm Id Duplication</p>
+                            </v-text-field>
+                            <v-btn color="gray">
+                                <p>Confirm Id Duplication</p>
                             </v-btn>
                         </div>
                     </form>
                     <div>
 
                         <div>
-                            <vue-daum-postcode @complete="oncomplete"/>
+                            <vue-daum-postcode @complete="oncomplete" />
                             <v-form style="padding: 10% 14% 10% 14%;" class="h-75">
-                                <v-img :width="550" aspect-ratio="16/9" cover></v-img>                                
+                                <v-img :width="550" aspect-ratio="16/9" cover></v-img>
                                 <v-text-field v-model="userData.password" prepend-inner-icon="mdi-lock" type="password"
                                     label="Password">
                                 </v-text-field>
@@ -33,11 +33,9 @@
                                     label="Password Check">
                                 </v-text-field>
                                 <div v-show="match"><span style="color:red">{{ "not matches password." }}</span></div>
-                                <v-text-field v-model="userData.id" label="Address"
-                                    prepend-inner-icon="mdi-home"
-                                    @click="search"
-                                    ></v-text-field>
-                                    <v-text-field v-model="userData.id" label="Detail Address"
+                                <v-text-field v-model="userData.id" label="Address" prepend-inner-icon="mdi-home"
+                                    @click="search"></v-text-field>
+                                <v-text-field v-model="userData.id" label="Detail Address"
                                     prepend-inner-icon="mdi-home"></v-text-field>
                                 <v-text-field v-model="userData.email" label="Email"
                                     prepend-inner-icon="mdi-email"></v-text-field>
@@ -67,6 +65,9 @@
 import { ref } from 'vue';
 import axios from "../http";
 import { VueDaumPostcode } from 'vue-daum-postcode';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
 
 interface User {
     id?: string,
@@ -93,7 +94,7 @@ const login = () => {
     })
 }
 
-const oncomplete = (data:any) => {    
+const oncomplete = (data: any) => {
     console.log(data);
 }
 </script>
