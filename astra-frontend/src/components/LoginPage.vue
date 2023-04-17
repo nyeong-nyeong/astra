@@ -1,7 +1,7 @@
 <template>
   <v-container fluid color="blue-grey lighten-4">
     <v-flex xs1>
-      <v-card style="padding: 0% 0% 0% 11%;">
+      <v-card>
         <div class="pa-9 login-main">
           <div>
             <v-form style="padding: 0% 14% 10% 14%;" class="h-75" @submit.prevent>
@@ -76,5 +76,7 @@ const join = () => {
 <style scoped>
 .login-main {
   display: flex;  
+  justify-content: center;
+  align-items: center;
 }
 </style>

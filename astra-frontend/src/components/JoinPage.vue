@@ -1,8 +1,9 @@
 <template>
     <v-container fluid color="blue-grey lighten-4">
         <v-flex xs1>
-            <v-card style="padding: 0% 35% 0% 23%;">
+            <v-card>
                 <div class="pa-9 login-main">
+                    <div>
                     <form style="padding-top: 0%;">
                         <v-img :width="530" src="../../public/team.png" aspect-ratio="16/9" cover>
                         </v-img>
@@ -12,15 +13,15 @@
                         <div>
                             <v-text-field v-model="userData.name" label="Name"
                                 prepend-inner-icon="mdi-pencil"></v-text-field>
-                            <VueDatePicker v-model="date"></VueDatePicker>aswd
+                            <VueDatePicker v-model="date"></VueDatePicker>
                             <v-text-field v-model="userData.id" label="Id" prepend-inner-icon="mdi-account">
                             </v-text-field>
                             <v-btn color="gray">
                                 <p>Confirm Id Duplication</p>
                             </v-btn>
                         </div>
-                    </form>
-                    <div>
+                    </form>       
+                   </div>             
 
                         <div>
                             <vue-daum-postcode @complete="oncomplete" />
@@ -53,8 +54,6 @@
                                 </v-btn>
                             </v-form>
                         </div>
-                    </div>
-
                 </div>
             </v-card>
         </v-flex>
@@ -101,5 +100,7 @@ const oncomplete = (data: any) => {
 <style scoped>
 .login-main {
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
