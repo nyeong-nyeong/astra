@@ -66,7 +66,7 @@ const login = () => {
       return window.alert(data);
     } else if (data == 'wrong password') {
       return window.alert('wrong password')
-    } window.alert('sucwcess')
+    } window.alert('success')
   })
 }
 const join = () => {

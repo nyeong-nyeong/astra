@@ -17,6 +17,7 @@
     "vue-class-component": "^8.0.0-0",
     "vue-daum-postcode": "^1.2.0",
     "vue-router": "^4.1.6",
+    "vue3-storage": "^0.1.11",
     "vuetify": "^3.0.0-beta.0",
     "webfontloader": "^1.0.0"
   },

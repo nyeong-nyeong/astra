@@ -7,33 +7,31 @@
       <left-nav-bar>
         <template v-slot:nav>
           <router-view/>          
-           <!-- <login-page/> -->
         </template>
     </left-nav-bar>
     </v-main>
   </v-app>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
+import {  ref } from 'vue';
 import LeftNavBar from './components/LeftNavBar.vue'
 import { router } from './router'
+import { onMounted } from 'vue';
+import { watch } from 'vue';
+let user = ref<any>(sessionStorage.setItem('isLogin' , ""));
 
-export default defineComponent({
-  name: 'App',
-
-  components: {
-    LeftNavBar,
-  },
-
-  data () {
-    return {
-    }
-  },
-  methods: {
-    toHome() {
-      router.push('/')
-    }
-  }
+onMounted(() => {
+  user = sessionStorage.setItem('isLogin' , "sdsd");
 })
+
+console.log(user);
+const toHome = () => {
+  router.push('/');
+}
+  
+watch(user , () => {
+  console.log(user);
+})
+
 </script>

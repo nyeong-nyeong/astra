@@ -34,17 +34,20 @@
               ></v-img>
             </v-col>
           </v-row>
-        
       </v-window-item>
     </v-window>
   </v-card>
 </v-container>
 </template>
 
-<script lang="ts">
-  export default {
-    data: () => ({
-      tab: null,
-    }),
-  }
+<script lang="ts" setup>
+import { onMounted } from 'vue';
+import { ref } from 'vue';
+const tab = ref();
+// const userName =ref('');
+onMounted(() => {
+  // 자바에서 아이디로 회원정보를 가져옴
+  // 그래서 화면에 띄움
+  // userMna,e =sa 
+})
 </script>
