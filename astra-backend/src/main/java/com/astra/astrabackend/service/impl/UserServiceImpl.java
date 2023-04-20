@@ -50,4 +50,12 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public String isExistId(String id){
+        if(repository.findById(id).isEmpty()){
+            return "OK";
+        }
+        return null;
+    }
+
 }

@@ -24,4 +24,10 @@ public class UsersController {
     public ResponseEntity<?> login(@RequestParam(value = "id") String id , @PathVariable String pw , HttpSession session) {
         return userService.login(id , pw , session);
     }
+
+    @GetMapping("/checkId")
+    public String isExistId(@RequestParam(value = "id")  String id){
+        System.err.print(id);
+        return userService.isExistId(id);
+    }
 }

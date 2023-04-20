@@ -15,4 +15,6 @@ public interface UserService {
 
     public List<UsersResponseDTO> UsersList();
 
+    public String isExistId(String id);
+
 }
