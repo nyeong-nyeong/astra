@@ -13,8 +13,7 @@ public class UsersResponseDTO {
     private String id;
     private String address;
     private String name;
-    private String fEmail;
-    private String sEmail;
+    private String email;
     private String gender;
     private String phoneNumber;
     private LocalDateTime birthday;
@@ -25,8 +24,7 @@ public class UsersResponseDTO {
         this.age = users.getAge();
         this.address = users.getAddress();
         this.name = users.getName();
-        this.fEmail = users.getFEmail();
-        this.sEmail = users.getSEmail();
+        this.email = users.getEmail();
         this.birthday = users.getBirthDay();
         this.phoneNumber = users.getPhoneNumber();
         this.gender = users.getGender();

@@ -31,7 +31,7 @@
                             <v-text-field v-model="passwordCheck" prepend-inner-icon="mdi-lock" type="password"
                                 label="Password Check">
                             </v-text-field>
-                            <div v-show="match"><span style="color:red">{{ "not matches password." }}</span></div>
+                            <div v-show="userData.password != passwordCheck"><span style="color:red">{{ "not matches password." }}</span></div>
                             <v-text-field v-model="userData.address" label="Address" prepend-inner-icon="mdi-home"
                                 @click="search" :readonly="true">
                                 <template>
@@ -57,24 +57,32 @@
                                     </v-row>
                                 </template>
                             </v-text-field>
+
                             <v-text-field v-model="detailAddress" label="Detail Address"
                                 prepend-inner-icon="mdi-home"></v-text-field>
-                            <v-text-field v-model="email" label="Email"
+
+                            <v-text-field v-model="userData.email" label="Email"
                                 prepend-inner-icon="mdi-email"></v-text-field>
+
                             <v-select v-model="userData.gender" :items="gender" label="Gender"
                                 prepend-inner-icon="mdi-pencil"></v-select>
-                            <v-text-field v-model="userData.birthday" :items="gender" label="BirthDay"
+
+                            <v-text-field v-model="userData.birthday" label="BirthDay"
                                 prepend-inner-icon="mdi-cake">
                                 <VueDatePicker v-model="userData.birthday"></VueDatePicker>
                             </v-text-field>
+
                             <v-text-field v-model="userData.phoneNumber" label="Phone Number"
                                 prepend-inner-icon="mdi-phone"></v-text-field>
-                            <v-btn @click="chheckRegist" color="warning" depressed large block dark class="mb-3">
+
+                            <v-btn @click="checkRegist" color="warning" block class="mb-3">
                                 Validate
                             </v-btn>
-                            <v-btn @click="regist" color="success" depressed large block dark>
+
+                            <v-btn @click="regist" color="success" block class="mb-3">
                                 Submit
                             </v-btn>
+
                         </v-form>
                     </div>
                 </div>
@@ -84,66 +92,78 @@
 </template>
     
 <script lang="ts" setup>
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
 import axios from "../http";
 import { VueDaumPostcode } from 'vue-daum-postcode';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import { watchEffect } from 'vue';
 
 
 interface User {
-    id: string,
-    password: string
-    name: string
-    address: string
-    sEmail: string
-    fEamil: string
-    gender: String
-    phoneNumber: string
-    birthday: Date 
-    age: number
+    id: string;
+    password: string;
+    name: string;
+    address: string;
+    email: string;
+    gender: string;
+    phoneNumber: string;
+    birthday: Date;
+    age: number; 
 }
-let email = "";
 const passwordCheck = ref("");
 const gender: any = ["male", "female"];
-const match: boolean = false;
 const userData = ref<User>({});
 const detailAddress = ref("");
 const dialog = ref(false);
-const date = ref(Date);
-const chheckRegist = () => {
-    if (userData.value.id == '' || !userData.value.id) {
-        window.alert('Please enter a user Id.')
-        return;
-    } else if (userData.value.password == '' || !userData.value.password) {
-        window.alert('Please enter a user PassWord.')
-        return;
-    }
-    axios.get(`/api/users/${userData.value.password}?id=${userData.value.id}`).then((response: any) => {
-        const data = response.data;
-        if (data == 'No Such Id') {
-            return window.alert(data);
-        } else if (data == 'wrong password') {
-            return window.alert('wrong password')
-        } window.alert('sucwcess')
-    })
-}
-const ceheckIdDulicated = () => {
-    axios.get(`/api/users/checkId?id=${userData.value.id}`).then((response: any) => {    
+const check = ref(false);
+const idCheck =ref(false);
+
+
+const ceheckIdDulicated = async () => {
+    axios.get(`/api/users/checkId?id=${userData.value.id}`)
+        .then((response: any) => {            
         if(response.data == 'OK'){
+            idCheck.value = true;
             alert('Id avaliable')
         } else {
             alert('Id aleady exist')
-            userData.value.id = "";
+             userData.value.id = "";
         }
-    })
+    })    
 }
+
+const checkRegist = () => {
+    let pattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    if(userData.value.name == null || userData.value.name ==  "") {
+        alert('insert your NickName')
+        return ;
+    } else if (idCheck.value == false){
+        alert('id check please')
+        return ;
+    } else if(userData.value.address == null || detailAddress.value == "" ||detailAddress.value == null) {
+        alert('insert Address or Detail Address');
+        return ;
+    } else if (userData.value.birthday == null) {
+        alert('check your BirthDaty');
+        return ;
+    } else if (userData.value.gender == null || userData.value.gender == ""){
+        alert('select your Gender');
+        return ;
+    } else if (userData.value.password != passwordCheck.value || userData.value.password == "") {
+        alert('insert your password or not matches password')
+        return ;
+    } else if (userData.value.email == null || userData.value.email == "" || userData.value.email.match(pattern) == null){
+        alert('insert your email or not email form');
+        return ;
+    }
+}
+
 const regist = () => {
-    console.log(email);
+    
 }
 
 const oncomplete = (data: any) => {
-    console.log(data.address);
     userData.value.address = data.address;
     dialog.value = false;
 }
@@ -152,12 +172,15 @@ const search = () => {
     dialog.value = true;
 }
 
-watchEffect(() => {
-    console.log(dialog.value);
-})
-
-watchEffect(() => {
-    console.log(date.value);
+watchEffect(() => {   
+    if(userData.value) 
+    Object.keys(userData.value).forEach((item)=>  {
+        if(item == 'id'){
+            console.log("아이디 건드림")
+            idCheck.value = false;
+        }
+        if(item){check.value = false;}
+    })
 })
 </script>
 <style scoped>

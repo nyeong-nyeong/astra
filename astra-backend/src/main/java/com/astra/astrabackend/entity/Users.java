@@ -23,10 +23,8 @@ public class Users {
     private String address;
     @Column(name="name")
     private String name;
-    @Column(name="f_email")
-    private String fEmail;
-    @Column(name="s_email")
-    private String sEmail;
+    @Column(name="email")
+    private String email;
     @Column(name="gender")
     private String gender;
     @Column(name="birthday")
@@ -37,13 +35,12 @@ public class Users {
     private Long age;
 
     @Builder
-    public Users(String id, String pw, String address, String name, String fEmail, String sEmail, String gender, LocalDateTime birthDay, String phoneNumber, Long age) {
+    public Users(String id, String pw, String address, String name, String email, String gender, LocalDateTime birthDay, String phoneNumber, Long age) {
         this.id = id;
         this.pw = pw;
         this.address = address;
         this.name = name;
-        this.fEmail = fEmail;
-        this.sEmail = sEmail;
+        this.email = email;
         this.gender = gender;
         this.birthDay = birthDay;
         this.phoneNumber = phoneNumber;

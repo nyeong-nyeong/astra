@@ -27,7 +27,6 @@ public class UsersController {
 
     @GetMapping("/checkId")
     public String isExistId(@RequestParam(value = "id")  String id){
-        System.err.print(id);
         return userService.isExistId(id);
     }
 }

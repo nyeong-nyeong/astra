@@ -65,7 +65,6 @@ watchEffect(() => {
   if (store.isLogin == true) {
       isLogin.value = true;
       user.value = store.user;
-      console.log(user.value.name);
   }
 
 });

@@ -7,6 +7,7 @@ import com.astra.astrabackend.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,12 +16,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private final UsersRepository repository;
-    private final PasswordEncoder passwordEncoder;
+    private UsersRepository repository;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserServiceImpl(UsersRepository repository , PasswordEncoder passwordEncoder){
+        this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
 
 

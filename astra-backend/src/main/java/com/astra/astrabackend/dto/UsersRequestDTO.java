@@ -20,9 +20,7 @@ public class UsersRequestDTO {
 
     private String name;
 
-    private String fEmail;
-
-    private String sEmail;
+    private String email;
 
     private String gender;
 
@@ -38,8 +36,7 @@ public class UsersRequestDTO {
                 .pw(pw)
                 .address(address)
                 .age(age)
-                .fEmail(fEmail)
-                .sEmail(sEmail)
+                .email(email)
                 .gender(gender)
                 .name(name)
                 .birthDay(birthday)
