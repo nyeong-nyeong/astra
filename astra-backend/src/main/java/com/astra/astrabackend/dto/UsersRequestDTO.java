@@ -18,6 +18,21 @@ public class UsersRequestDTO {
 
     private String address;
 
+    @Override
+    public String toString() {
+        return "UsersRequestDTO{" +
+                "id='" + id + '\'' +
+                ", pw='" + pw + '\'' +
+                ", address='" + address + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", gender='" + gender + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", birthday=" + birthday +
+                ", age=" + age +
+                '}';
+    }
+
     private String name;
 
     private String email;

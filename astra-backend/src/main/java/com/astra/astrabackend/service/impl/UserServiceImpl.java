@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @Slf4j
@@ -58,7 +59,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String isExistId(String id){
-        if(repository.findById(id).isEmpty()){
+
+        if(!repository.existsById(id.toLowerCase())){
             return "OK";
         }
         return null;

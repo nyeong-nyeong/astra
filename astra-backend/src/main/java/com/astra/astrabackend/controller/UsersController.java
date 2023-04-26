@@ -17,6 +17,7 @@ public class UsersController {
 
     @PostMapping
     public void newUsers(@RequestBody UsersRequestDTO dto){
+        System.err.println(dto.toString());
         userService.newUsers(dto);
     }
 

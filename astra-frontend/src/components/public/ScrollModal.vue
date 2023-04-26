@@ -21,4 +21,5 @@ import { ref } from 'vue';
 
 const dialog = ref(false);
 
-</script>
+
+</script>``

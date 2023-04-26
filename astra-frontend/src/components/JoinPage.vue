@@ -25,23 +25,19 @@
                     <div>
                         <v-form style="padding: 10% 14% 10% 14%;" class="h-75">
                             <v-img :width="550" aspect-ratio="16/9" cover></v-img>
-                            <v-text-field v-model="userData.password" prepend-inner-icon="mdi-lock" type="password"
+                            <v-text-field v-model="userData.pw" prepend-inner-icon="mdi-lock" type="password"
                                 label="Password">
                             </v-text-field>
                             <v-text-field v-model="passwordCheck" prepend-inner-icon="mdi-lock" type="password"
                                 label="Password Check">
                             </v-text-field>
-                            <div v-show="userData.password != passwordCheck"><span style="color:red">{{ "not matches password." }}</span></div>
+                            <div v-show="userData.pw != passwordCheck">                                
+                                <span style="color:red">{{ "not matchespassword." }}</span></div>
                             <v-text-field v-model="userData.address" label="Address" prepend-inner-icon="mdi-home"
                                 @click="search" :readonly="true">
                                 <template>
                                     <v-row justify="center">
                                         <v-dialog v-model="dialog" width="800">
-                                            <template v-slot:activator="{ props }">
-                                                <v-btn color="primary" v-bind="props">
-                                                    Open Dialog
-                                                </v-btn>
-                                            </template>
                                             <v-card>
                                                 <v-card-text>
                                                     <vue-daum-postcode @complete="oncomplete" />
@@ -67,12 +63,11 @@
                             <v-select v-model="userData.gender" :items="gender" label="Gender"
                                 prepend-inner-icon="mdi-pencil"></v-select>
 
-                            <v-text-field v-model="userData.birthday" label="BirthDay"
-                                prepend-inner-icon="mdi-cake">
+                            <v-text-field v-model="userData.birthday" label="BirthDay" prepend-inner-icon="mdi-cake">
                                 <VueDatePicker v-model="userData.birthday"></VueDatePicker>
                             </v-text-field>
 
-                            <v-text-field v-model="userData.phoneNumber" label="Phone Number"
+                            <v-text-field v-model="userData.phoneNumber" label='Number (include "-" when typing)'
                                 prepend-inner-icon="mdi-phone"></v-text-field>
 
                             <v-btn @click="checkRegist" color="warning" block class="mb-3">
@@ -99,17 +94,16 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import { watchEffect } from 'vue';
 
-
 interface User {
     id: string;
-    password: string;
+    pw: string;
     name: string;
     address: string;
     email: string;
     gender: string;
     phoneNumber: string;
     birthday: Date;
-    age: number; 
+    age: number;
 }
 const passwordCheck = ref("");
 const gender: any = ["male", "female"];
@@ -117,50 +111,80 @@ const userData = ref<User>({});
 const detailAddress = ref("");
 const dialog = ref(false);
 const check = ref(false);
-const idCheck =ref(false);
+const idCheck = ref(false);
 
 
 const ceheckIdDulicated = async () => {
+    let aa = /^[a-z0-9]{7,14}$/;
+    if(!aa.test(userData.value.id) || userData.value.id == null){
+        alert('Please make it with more than 7 digits and less than 14 digits and a mixture of lowercase letters and numbers.');
+        return;
+    }
     axios.get(`/api/users/checkId?id=${userData.value.id}`)
-        .then((response: any) => {            
-        if(response.data == 'OK'){
-            idCheck.value = true;
-            alert('Id avaliable')
-        } else {
-            alert('Id aleady exist')
-             userData.value.id = "";
-        }
-    })    
+        .then((response: any) => {
+            if (response.data == 'OK') {
+                idCheck.value = true;
+                alert('Id avaliable')
+            } else {
+                alert('Id aleady exist')
+                userData.value.id = "";
+            }
+        })
 }
 
-const checkRegist = () => {
-    let pattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-    if(userData.value.name == null || userData.value.name ==  "") {
-        alert('insert your NickName')
-        return ;
-    } else if (idCheck.value == false){
-        alert('id check please')
-        return ;
-    } else if(userData.value.address == null || detailAddress.value == "" ||detailAddress.value == null) {
-        alert('insert Address or Detail Address');
-        return ;
+const checkRegist = () => {    
+    const pattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    const numberPattern = /\d{3}-\d{4}-\d{4}/;    
+
+    if (userData.value.name == null || userData.value.name == "") {
+        alert('Insert your NickName')
+        return;
+    } else if (idCheck.value == false) {
+        alert('Id check please')
+        return;
+    } else if (userData.value.address == null || detailAddress.value == "" || detailAddress.value == null) {
+        alert('Insert address or detail address');    
+        return;
     } else if (userData.value.birthday == null) {
-        alert('check your BirthDaty');
-        return ;
-    } else if (userData.value.gender == null || userData.value.gender == ""){
-        alert('select your Gender');
-        return ;
-    } else if (userData.value.password != passwordCheck.value || userData.value.password == "") {
-        alert('insert your password or not matches password')
-        return ;
-    } else if (userData.value.email == null || userData.value.email == "" || userData.value.email.match(pattern) == null){
-        alert('insert your email or not email form');
-        return ;
+        alert('Check your birthDaty');
+        return;
+    } else if (userData.value.gender == null || userData.value.gender == "") {
+        alert('Select your gender');
+        return;
+    } else if (userData.value.pw != passwordCheck.value || userData.value.pw == "") {
+        alert('Insert your password or not matches password')
+        return;
+    } else if (!pattern.test(userData.value.email)) {
+        alert('Email is missing or formatted incorrectly.');
+        return;
+    } else if (!numberPattern.test(userData.value.phoneNumber)) {
+        alert('Please do not insert or insert according to the format.')
+        return;
+    } else {
+        check.value = true;
     }
 }
 
 const regist = () => {
-    
+    if(check.value != true){
+        alert("please click the validate button first");
+        return;
+    } 
+    let today = new Date();
+    userData.value.age = today.getFullYear() - userData.value.birthday.getFullYear();
+    userData.value.address += (" " + detailAddress.value);
+    console.log(userData.value);
+    if(check.value == true){
+        axios.post(`/api/users` , userData.value
+        )
+        .then((data : any) =>{
+            const response  = data;
+            console.log(response);
+        })
+        .finally(() => {
+            console.log()
+        })
+    }
 }
 
 const oncomplete = (data: any) => {
@@ -172,15 +196,18 @@ const search = () => {
     dialog.value = true;
 }
 
-watchEffect(() => {   
-    if(userData.value) 
-    Object.keys(userData.value).forEach((item)=>  {
-        if(item == 'id'){
-            console.log("아이디 건드림")
-            idCheck.value = false;
-        }
-        if(item){check.value = false;}
-    })
+watchEffect(() => {
+    if (userData.value)
+        Object.keys(userData.value).forEach((item) => {
+            if (item) {
+                check.value = false;
+            }
+        })
+})
+
+watchEffect(() => {
+    if(userData.value.id)
+    idCheck.value = false;    
 })
 </script>
 <style scoped>
